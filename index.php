@@ -1,6 +1,6 @@
 <html>
 <head>
-  <title>Status</title>
+  <title>status.acousti.cloud</title>
 </head>
 <body>
 <script>
@@ -65,6 +65,96 @@
     }
   }
   xhr4.send();
+
+  //Ping vocab server to see if it's alive
+  var url = "https://vocab.audioblast.org/ping/";
+  var xhr5 = new XMLHttpRequest();
+  xhr5.open("GET", url, true);
+  xhr5.onreadystatechange = function() {
+    if (xhr5.readyState == 4) {
+      if (xhr5.responseText == "pong") {
+        document.getElementById("vocab-server-web-status").innerHTML = "OK";
+      } else {
+        document.getElementById("vocab-server-web-status").innerHTML = "ERROR";
+      }
+    }
+  }
+  xhr5.send();
+
+  //Ping audioblast server to see if it's alive
+  var url = "https://audioblast.org/index.php?page=ping";
+  var xhr6 = new XMLHttpRequest();
+  xhr6.open("GET", url, true);
+  xhr6.onreadystatechange = function() {
+    if (xhr6.readyState == 4) {
+      if (xhr6.responseText == "pong") {
+        document.getElementById("audioblast-web-status").innerHTML = "OK";
+      } else {
+        document.getElementById("audioblast-web-status").innerHTML = "ERROR";
+      }
+    }
+  }
+  xhr6.send();
+
+  //Ping audioblast-dev server to see if it's alive
+  var url = "https://ab.acousti.cloud/index.php?page=ping";
+  var xhr7 = new XMLHttpRequest();
+  xhr7.open("GET", url, true);
+  xhr7.onreadystatechange = function() {
+    if (xhr7.readyState == 4) {
+      if (xhr7.responseText == "pong") {
+        document.getElementById("audioblast-dev-web-status").innerHTML = "OK";
+      } else {
+        document.getElementById("audioblast-dev-web-status").innerHTML = "ERROR";
+      }
+    }
+  }
+  xhr7.send();
+
+  //Ping api audioblast webserver
+  var url = "https://api.audioblast.org/ping";
+  var xhr8 = new XMLHttpRequest();
+  xhr8.open("GET", url, true);
+  xhr8.onreadystatechange = function() {
+    if (xhr8.readyState == 4) {
+      if (xhr8.responseText == "pong") {
+        document.getElementById("api-web-status").innerHTML = "OK";
+      } else {
+        document.getElementById("api-web-status").innerHTML = "ERROR";
+      }
+    }
+  }
+  xhr8.send();
+
+  //Ping cdn audioblast webserver
+  var url = "https://cdn.audioblast.org/index.php?page=ping";
+  var xhr9 = new XMLHttpRequest();
+  xhr9.open("GET", url, true);
+  xhr9.onreadystatechange = function() {
+    if (xhr9.readyState == 4) {
+      if (xhr9.responseText == "pong") {
+        document.getElementById("cdn-web-status").innerHTML = "OK";
+      } else {
+        document.getElementById("cdn-web-status").innerHTML = "ERROR";
+      }
+    }
+  }
+  xhr9.send();
+
+  //Ping view audioblast webserver
+  var url = "https://view.audioblast.org/index.php?page=ping";
+  var xhr10 = new XMLHttpRequest();
+  xhr10.open("GET", url, true);
+  xhr10.onreadystatechange = function() {
+    if (xhr10.readyState == 4) {
+      if (xhr10.responseText == "pong") {
+        document.getElementById("view-web-status").innerHTML = "OK";
+      } else {
+        document.getElementById("view-web-status").innerHTML = "ERROR";
+      }
+    }
+  }
+  xhr10.send();
 
 </script>
 </body>
@@ -172,5 +262,39 @@
       <tr>
         <td>Outstanding tasks</td>
         <td id="outstanding-tasks"></td>
+      </tr>
+  </table>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Service</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>api.audioblast.org (web)</td>
+        <td id="api-web-status"></td>
+      </tr>
+      <tr>
+        <td>audioblast.org (web)</td>
+        <td id="audioblast-web-status"></td>
+      </tr>
+      <tr>
+        <td>audioblast.org-dev [ab.acousti.cloud] (web)</td>
+        <td id="audioblast-dev-web-status"></td>
+      </tr>
+      <tr>
+        <td>cdn.audioblast.org (web)</td>
+        <td id="cdn-web-status"></td>
+      </tr>
+      <tr>
+        <td>view.audioblast.org (web)</td>
+        <td id="view-web-status"></td>
+      </tr>
+      <tr>
+        <td>vocab.audioblast.org (web)</td>
+        <td id="vocab-server-web-status"></td>
       </tr>
   </table>
