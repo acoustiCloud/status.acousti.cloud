@@ -2,10 +2,14 @@
 <html lang="en">
 <head>
   <title>status.acousti.cloud</title>
+  <meta charset="utf-8">
+  <meta name="description" content="Status of the acousti.cloud services">
+  <meta name="author" content="Ed Baker">
 </head>
 <body>
 
 <h1>Status</h1>
+<p>This page shows the operational status of the bioacoustic and ecoacoustic services that form the audioBlast ecosystem.</p>
 <div id="data-counts">
   <table>
     <thead>
@@ -144,6 +148,7 @@
         <td id="vocab-server-web-status"></td>
       </tr>
   </table>
+  <small>Author: <a href="https://ebaker.me.uk">Ed Baker</a></small>
   <script src="status.js"></script>
 </body>
 </html>
