@@ -29,7 +29,7 @@ xhr2.onreadystatechange = function() {
     document.getElementById("analysis-counts-M").innerHTML = resp.data.counts["analysis-M"];
     document.getElementById("analysis-counts-ndsi").innerHTML = resp.data.counts["analysis-ndsi"];
     document.getElementById("analysis-counts-sh").innerHTML = resp.data.counts["analysis-sh"];
-    document.getElementById("analysis-counts-tdsc").innerHTML = resp.data.counts["analysis-tdsc"];
+    document.getElementById("analysis-counts-tdsc").innerHTML = resp.data.counts["analysis_3sec-tdsc"];
     document.getElementById("analysis-counts-th").innerHTML = resp.data.counts["analysis-th"];
   }
 }
