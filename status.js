@@ -120,6 +120,7 @@ xhr8.onreadystatechange = function() {
 }
 xhr8.send();
 
+
 //Ping cdn audioblast webserver
 var url = "https://cdn.audioblast.org/index.php?page=ping";
 var xhr9 = new XMLHttpRequest();
@@ -149,3 +150,33 @@ xhr10.onreadystatechange = function() {
   }
 }
 xhr10.send();
+
+//Ping api audioblast webserver for database
+var url = "https://api.audioblast.org/dbping";
+var xhr11 = new XMLHttpRequest();
+xhr11.open("GET", url, true);
+xhr11.onreadystatechange = function() {
+  if (xhr11.readyState == 4) {
+    if (xhr11.responseText.startsWith("Database connection failed:")) {
+      document.getElementById("api-db-status").innerHTML = "ERROR";
+    } else {
+      document.getElementById("api-db-status").innerHTML = "OK";
+    }
+  }
+}
+xhr11.send();
+
+//Ping api audioblast webserver for database
+var url = "https://vocab.audioblast.org/dbping";
+var xhr12 = new XMLHttpRequest();
+xhr12.open("GET", url, true);
+xhr12.onreadystatechange = function() {
+  if (xhr12.readyState == 4) {
+    if (xhr12.responseText.startsWith("Database connection failed:")) {
+      document.getElementById("vocab-server-db-status").innerHTML = "ERROR";
+    } else {
+      document.getElementById("vocab-server-db-status").innerHTML = "OK";
+    }
+  }
+}
+xhr12.send();
