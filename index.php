@@ -128,6 +128,10 @@
         <td id="api-web-status"></td>
       </tr>
       <tr>
+        <td>api.audioblast.org (database)</td>
+        <td id="api-db-status"></td>
+      </tr>
+      <tr>
         <td>audioblast.org (web)</td>
         <td id="audioblast-web-status"></td>
       </tr>
@@ -146,6 +150,10 @@
       <tr>
         <td>vocab.audioblast.org (web)</td>
         <td id="vocab-server-web-status"></td>
+      </tr>
+      <tr>
+        <td>vocab.audioblast.org (database)</td>
+        <td id="vocab-server-db-status"></td>
       </tr>
   </table>
   <small>Author: <a href="https://ebaker.me.uk">Ed Baker</a></small>
