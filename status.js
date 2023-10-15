@@ -61,7 +61,7 @@ xhr4.onreadystatechange = function() {
 xhr4.send();
 
 //Ping vocab server to see if it's alive
-var url = "https://vocab.audioblast.org/ping/";
+var url = "https://vocab.audioblast.org/ping";
 var xhr5 = new XMLHttpRequest();
 xhr5.open("GET", url, true);
 xhr5.onreadystatechange = function() {
