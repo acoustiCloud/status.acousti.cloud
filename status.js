@@ -31,6 +31,8 @@ xhr2.onreadystatechange = function() {
     document.getElementById("analysis-counts-sh").innerHTML = resp.data.counts["analysis-sh"];
     document.getElementById("analysis-counts-tdsc").innerHTML = resp.data.counts["analysis_3sec-tdsc"];
     document.getElementById("analysis-counts-th").innerHTML = resp.data.counts["analysis-th"];
+    document.getElementById("analysis-counts-birdnet-embeddings").innerHTML = resp.data.counts["analysis_3sec-birdnet_default_embed"];
+    document.getElementById("analysis-counts-birdnet-default").innerHTML = resp.data.counts["analysis_3sec-birdnet_default-selection"];
   }
 }
 xhr2.send();
@@ -48,7 +50,7 @@ xhr3.onreadystatechange = function() {
 xhr3.send();
 
 //Get number of assigned tasks and outstanding tasks from audioBlast API and populate
-var url = "https://api.audioblast.org/standalone/analysis/fetch_analysis_status/";
+var url = "https://api.audioblast.org/standalone/analysis/fetch_analysis_status/?cache=0";
 var xhr4 = new XMLHttpRequest();
 xhr4.open("GET", url, true);
 xhr4.onreadystatechange = function() {
