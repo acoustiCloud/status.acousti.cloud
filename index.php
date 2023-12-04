@@ -10,6 +10,49 @@
 
 <h1>Status</h1>
 <p>This page shows the operational status of the bioacoustic and ecoacoustic services that form the audioBlast ecosystem.</p>
+
+<table>
+    <thead>
+      <tr>
+        <th>Service</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>api.audioblast.org (web)</td>
+        <td id="api-web-status"></td>
+      </tr>
+      <tr>
+        <td>api.audioblast.org (database)</td>
+        <td id="api-db-status"></td>
+      </tr>
+      <tr>
+        <td>audioblast.org (web)</td>
+        <td id="audioblast-web-status"></td>
+      </tr>
+      <tr>
+        <td>audioblast.org-dev [ab.acousti.cloud] (web)</td>
+        <td id="audioblast-dev-web-status"></td>
+      </tr>
+      <tr>
+        <td>cdn.audioblast.org (web)</td>
+        <td id="cdn-web-status"></td>
+      </tr>
+      <tr>
+        <td>view.audioblast.org (web)</td>
+        <td id="view-web-status"></td>
+      </tr>
+      <tr>
+        <td>vocab.audioblast.org (web)</td>
+        <td id="vocab-server-web-status"></td>
+      </tr>
+      <tr>
+        <td>vocab.audioblast.org (database)</td>
+        <td id="vocab-server-db-status"></td>
+      </tr>
+  </table>
+
 <div id="data-counts">
   <table>
     <thead>
@@ -64,6 +107,14 @@
         <td id="analysis-counts-bi"></td>
       </tr>
       <tr>
+        <td>BirdNET embeddings</td>
+        <td id="analysis-counts-birdnet-embeddings"></td>
+      </tr>
+      <tr>
+        <td>BirdNET default IDs</td>
+        <td id="analysis-counts-birdnet-default"></td>
+      </tr>
+      <tr>
         <td>Acoustic evenness</td>
         <td id="analysis-counts-evenness"></td>
       </tr>
@@ -115,47 +166,6 @@
       </tr>
   </table>
 
-  <table>
-    <thead>
-      <tr>
-        <th>Service</th>
-        <th>Status</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td>api.audioblast.org (web)</td>
-        <td id="api-web-status"></td>
-      </tr>
-      <tr>
-        <td>api.audioblast.org (database)</td>
-        <td id="api-db-status"></td>
-      </tr>
-      <tr>
-        <td>audioblast.org (web)</td>
-        <td id="audioblast-web-status"></td>
-      </tr>
-      <tr>
-        <td>audioblast.org-dev [ab.acousti.cloud] (web)</td>
-        <td id="audioblast-dev-web-status"></td>
-      </tr>
-      <tr>
-        <td>cdn.audioblast.org (web)</td>
-        <td id="cdn-web-status"></td>
-      </tr>
-      <tr>
-        <td>view.audioblast.org (web)</td>
-        <td id="view-web-status"></td>
-      </tr>
-      <tr>
-        <td>vocab.audioblast.org (web)</td>
-        <td id="vocab-server-web-status"></td>
-      </tr>
-      <tr>
-        <td>vocab.audioblast.org (database)</td>
-        <td id="vocab-server-db-status"></td>
-      </tr>
-  </table>
   <small>Author: <a href="https://ebaker.me.uk">Ed Baker</a></small>
   <script src="status.js"></script>
 </body>
