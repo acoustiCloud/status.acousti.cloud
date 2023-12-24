@@ -115,6 +115,9 @@
         <td id="analysis-counts-birdnet-default"></td>
       </tr>
       <tr>
+        <td>BirdNET latlon IDs</td>
+        <td id="analysis-counts-birdnet-latlon"></td>
+      <tr>
         <td>Acoustic evenness</td>
         <td id="analysis-counts-evenness"></td>
       </tr>

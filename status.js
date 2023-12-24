@@ -32,7 +32,8 @@ xhr2.onreadystatechange = function() {
     document.getElementById("analysis-counts-tdsc").innerHTML = resp.data.counts["analysis_3sec-tdsc"];
     document.getElementById("analysis-counts-th").innerHTML = resp.data.counts["analysis-th"];
     document.getElementById("analysis-counts-birdnet-embeddings").innerHTML = resp.data.counts["analysis_3sec-birdnet_default_embed"];
-    document.getElementById("analysis-counts-birdnet-default").innerHTML = resp.data.counts["analysis_3sec-birdnet_default-selection"];
+    document.getElementById("analysis-counts-birdnet-default").innerHTML = resp.data.counts["d_3sec-birdnet_default-selection"];
+    document.getElementById("analysis-counts-birdnet-latlon").innerHTML = resp.data.counts["d_3sec-birdnet_latlon-selection"];
   }
 }
 xhr2.send();
