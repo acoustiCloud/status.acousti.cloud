@@ -11,6 +11,18 @@
 <h1>Status</h1>
 <p>This page shows the operational status of the bioacoustic and ecoacoustic services that form the audioBlast ecosystem.</p>
 
+<?php
+include("db.php");
+$query = "SELECT notice FROM notices WHERE active = 1";
+$result = $db->query($query);
+if ($result->num_rows > 0) {
+  print "<h2>Notices</h2>";
+  while($row = $result->fetch_assoc()) {
+    print("<p class='notice'>".$row["notice"] . "</p>");
+  }
+}
+?>
+
 <table>
     <thead>
       <tr>
