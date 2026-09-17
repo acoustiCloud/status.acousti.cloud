@@ -1,176 +1,707 @@
 <!doctype html>
-<html lang="en">
+<html lang="en-GB">
 <head>
-  <title>status.acousti.cloud</title>
   <meta charset="utf-8">
-  <meta name="description" content="Status of the acousti.cloud services">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Service status · acousti.cloud</title>
+  <meta name="description" content="Whether the audioBlast services for bioacoustics and ecoacoustics are up, with counts of the recordings, analyses and tasks in audioBlast.">
   <meta name="author" content="Ed Baker">
+  <link rel="canonical" href="https://status.acousti.cloud/">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" content="#f6f8f9" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#0c1419" media="(prefers-color-scheme: dark)">
+  <style>
+    :root {
+      --bg: #f6f8f9;
+      --surface: #ffffff;
+      --ink: #1f2933;
+      --muted: #52606d;
+      --line: #dfe6ea;
+      --field-line: #7f909b;
+      --accent: #1a6a86;
+      --accent-hover: #12536a;
+      --accent-soft: #e5f0f4;
+      --on-accent: #ffffff;
+      --glow: rgb(26 106 134 / 13%);
+      --up: #17754a;
+      --up-soft: #e3f2ea;
+      --down: #b3261e;
+      --down-soft: #fbeae8;
+      --down-line: #ebb4ae;
+      --shadow: 0 1px 2px rgb(16 34 43 / 5%), 0 4px 16px rgb(16 34 43 / 5%);
+      --sans: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #0c1419;
+        --surface: #121d24;
+        --ink: #e5edf1;
+        --muted: #9aacb7;
+        --line: #243540;
+        --field-line: #56707f;
+        --accent: #62bdd6;
+        --accent-hover: #8dd1e4;
+        --accent-soft: #15303b;
+        --on-accent: #0c1419;
+        --glow: rgb(98 189 214 / 10%);
+        --up: #63d197;
+        --up-soft: #11301f;
+        --down: #ff9189;
+        --down-soft: #3b1a1b;
+        --down-line: #6e3431;
+        --shadow: 0 1px 2px rgb(0 0 0 / 30%);
+      }
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+    [hidden] { display: none !important; }
+
+    html {
+      -webkit-text-size-adjust: 100%;
+      text-size-adjust: 100%;
+    }
+
+    body {
+      margin: 0;
+      background: radial-gradient(64rem 34rem at 50% -8rem, var(--glow), transparent 70%) no-repeat, var(--bg);
+      color: var(--ink);
+      font-family: var(--sans);
+      font-size: 1rem;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    a {
+      color: var(--accent);
+      text-decoration-thickness: 1px;
+      text-underline-offset: .2em;
+    }
+
+    a:hover { color: var(--accent-hover); }
+
+    :focus-visible {
+      outline: 3px solid var(--accent);
+      outline-offset: 2px;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 72rem;
+      margin-inline: auto;
+      padding-inline: 1rem;
+    }
+
+    @media (min-width: 40rem) {
+      .container { padding-inline: 1.5rem; }
+    }
+
+    .sprite {
+      position: absolute;
+      width: 0;
+      height: 0;
+      overflow: hidden;
+    }
+
+    .skip-link {
+      position: absolute;
+      top: .75rem;
+      left: .75rem;
+      z-index: 100;
+      padding: .5rem 1rem;
+      border-radius: .5rem;
+      background: var(--accent);
+      color: var(--on-accent);
+      font-weight: 600;
+      text-decoration: none;
+      transform: translateY(-200%);
+    }
+
+    .skip-link:focus { transform: none; color: var(--on-accent); }
+
+    .icon {
+      flex: none;
+      width: 1em;
+      height: 1em;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    @keyframes pulse {
+      to { opacity: .45; }
+    }
+
+    /* Header */
+
+    .header-inner {
+      display: flex;
+      align-items: center;
+      min-height: 4.5rem;
+      padding-block: .5rem;
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: .625rem;
+      color: var(--ink);
+      font-size: 1.125rem;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      text-decoration: none;
+    }
+
+    .brand:hover { color: var(--ink); }
+
+    .brand-mark { flex: none; width: 2rem; height: 2rem; }
+    .brand-mark rect { fill: var(--accent); }
+
+    .brand-mark path {
+      fill: none;
+      stroke: var(--on-accent);
+      stroke-width: 2.25;
+      stroke-linecap: round;
+    }
+
+    .brand-tld { color: var(--muted); font-weight: 500; }
+
+    /* Page heading */
+
+    .page-head { padding-top: clamp(2rem, 6vw, 4rem); }
+
+    .kicker {
+      margin: 0 0 .5rem;
+      color: var(--accent);
+      font-size: .8125rem;
+      font-weight: 650;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(2.125rem, 1.5rem + 2.8vw, 3.25rem);
+      font-weight: 750;
+      line-height: 1.08;
+      letter-spacing: -0.03em;
+    }
+
+    .page-intro {
+      max-width: 40rem;
+      margin: .875rem 0 0;
+      color: var(--muted);
+      font-size: clamp(1.0625rem, 1rem + .3vw, 1.1875rem);
+      text-wrap: pretty;
+    }
+
+    .no-script {
+      margin: 2rem 0 0;
+      padding: 1.25rem;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 1.25rem;
+    }
+
+    /* Summary */
+
+    .summary {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 1rem 1.25rem;
+      margin-top: 2rem;
+      padding: 1.25rem;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 1.25rem;
+      box-shadow: var(--shadow);
+    }
+
+    @media (min-width: 40rem) {
+      .summary { padding: 1.5rem 1.75rem; }
+    }
+
+    .summary[data-state="down"] { border-color: var(--down-line); }
+
+    .summary-icon {
+      display: grid;
+      flex: none;
+      place-items: center;
+      width: 3rem;
+      height: 3rem;
+      border-radius: .875rem;
+      background: var(--accent-soft);
+      color: var(--accent);
+    }
+
+    .summary-icon .icon { width: 1.625rem; height: 1.625rem; }
+    .summary[data-state="up"] .summary-icon { background: var(--up-soft); color: var(--up); }
+    .summary[data-state="down"] .summary-icon { background: var(--down-soft); color: var(--down); }
+
+    .summary-text { flex: 1 1 10rem; min-width: 0; }
+
+    .summary-title {
+      margin: 0;
+      font-size: clamp(1.25rem, 1.1rem + .6vw, 1.5rem);
+      line-height: 1.25;
+      letter-spacing: -0.02em;
+      text-wrap: balance;
+    }
+
+    .summary-time {
+      margin: .25rem 0 0;
+      color: var(--muted);
+      font-size: .9375rem;
+    }
+
+    .button {
+      display: inline-flex;
+      flex: none;
+      align-items: center;
+      justify-content: center;
+      gap: .5rem;
+      min-height: 2.75rem;
+      padding: .5rem 1.125rem;
+      border: 1px solid var(--field-line);
+      border-radius: .75rem;
+      background: var(--surface);
+      color: var(--accent);
+      font: inherit;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background-color .15s ease, border-color .15s ease, color .15s ease;
+    }
+
+    .button:hover {
+      border-color: var(--accent);
+      background: var(--accent-soft);
+      color: var(--accent-hover);
+    }
+
+    .button:focus-visible { outline-offset: 3px; }
+    .button .icon { width: 1.125rem; height: 1.125rem; }
+
+    /* While the checks run, the button keeps its focus but does nothing */
+    .button[aria-disabled="true"] {
+      border-color: var(--line);
+      background: var(--surface);
+      color: var(--muted);
+      cursor: progress;
+    }
+
+    @media (max-width: 30rem) {
+      .summary .button { flex: 1 1 100%; }
+    }
+
+    /* Sections */
+
+    .section { margin-top: clamp(2.5rem, 6vw, 3.75rem); }
+
+    .section-head { max-width: 40rem; margin-bottom: 1.25rem; }
+
+    .section-head h2 {
+      margin: 0;
+      font-size: clamp(1.375rem, 1.15rem + .9vw, 1.75rem);
+      line-height: 1.2;
+      letter-spacing: -0.02em;
+    }
+
+    .section-intro { margin: .375rem 0 0; color: var(--muted); }
+
+    /* Services */
+
+    .checks {
+      display: grid;
+      gap: .75rem;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    @media (min-width: 48rem) {
+      .checks { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
+    }
+
+    /* A card in the same row as a taller one keeps its text at the top */
+    .check {
+      display: flex;
+      flex-wrap: wrap;
+      align-content: flex-start;
+      align-items: center;
+      justify-content: space-between;
+      gap: .5rem 1rem;
+      padding: 1rem 1.25rem;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 1rem;
+      box-shadow: var(--shadow);
+    }
+
+    .check[data-state="down"] { border-color: var(--down-line); }
+
+    .check-name {
+      display: grid;
+      flex: 1 1 10rem;
+      min-width: 0;
+    }
+
+    .check-host {
+      font-weight: 650;
+      line-height: 1.4;
+      overflow-wrap: anywhere;
+    }
+
+    .check-kind { color: var(--muted); font-size: .875rem; }
+
+    .check-state {
+      display: inline-flex;
+      align-items: center;
+      gap: .375rem;
+      margin: 0;
+      padding: .25rem .75rem .25rem .5rem;
+      border-radius: 999px;
+      background: var(--accent-soft);
+      color: var(--accent);
+      font-size: .875rem;
+      font-weight: 650;
+      white-space: nowrap;
+    }
+
+    .check-state .icon { width: 1.125rem; height: 1.125rem; }
+    .check[data-state="up"] .check-state { background: var(--up-soft); color: var(--up); }
+    .check[data-state="down"] .check-state { background: var(--down-soft); color: var(--down); }
+
+    .check-detail {
+      flex: 1 1 100%;
+      margin: 0;
+      color: var(--muted);
+      font-size: .875rem;
+    }
+
+    .check-detail:empty { display: none; }
+
+    .check[data-state="checking"] .check-state .icon,
+    .summary[data-state="checking"] .summary-icon .icon {
+      animation: spin 1s linear infinite;
+    }
+
+    /* Counts */
+
+    .notice {
+      display: flex;
+      align-items: flex-start;
+      gap: .625rem;
+      margin: 0 0 1rem;
+      padding: .75rem 1rem;
+      background: var(--down-soft);
+      border: 1px solid var(--down-line);
+      border-radius: .875rem;
+      font-size: .9375rem;
+    }
+
+    .notice .icon {
+      width: 1.25rem;
+      height: 1.25rem;
+      margin-top: .125rem;
+      color: var(--down);
+    }
+
+    /* Two tiles to each service card, so the columns line up down the page */
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: .75rem;
+      margin: 0;
+    }
+
+    @media (min-width: 48rem) {
+      .stats { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1rem; }
+    }
+
+    .stat {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: .375rem;
+      padding: .875rem 1rem 1rem;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 1rem;
+      box-shadow: var(--shadow);
+    }
+
+    .stat dt {
+      color: var(--muted);
+      font-size: .875rem;
+      font-weight: 550;
+      line-height: 1.35;
+    }
+
+    .stat dd {
+      --stat-size: clamp(1.375rem, 1.15rem + .9vw, 1.75rem);
+      display: flex;
+      align-items: center;
+      min-height: calc(var(--stat-size) * 1.2);
+      margin: 0;
+      font-size: var(--stat-size);
+      font-weight: 700;
+      line-height: 1.2;
+      letter-spacing: -0.02em;
+      font-variant-numeric: tabular-nums;
+      overflow-wrap: anywhere;
+    }
+
+    /* The word "Loading" stays in the page for screen readers, under a placeholder bar */
+    .stat dd[data-state="loading"] { position: relative; color: transparent; }
+
+    .stat dd[data-state="loading"]::after {
+      content: "";
+      position: absolute;
+      top: 50%;
+      left: 0;
+      width: min(100%, 6.5rem);
+      height: .75em;
+      border-radius: .375rem;
+      background: var(--line);
+      transform: translateY(-50%);
+      animation: pulse .8s ease-in-out infinite alternate;
+    }
+
+    .stat dd[data-state="unavailable"] {
+      color: var(--muted);
+      font-size: .9375rem;
+      font-weight: 600;
+      letter-spacing: 0;
+    }
+
+    /* Footer */
+
+    .site-footer {
+      margin-top: clamp(3.5rem, 8vw, 5rem);
+      padding-block: 1.75rem 2.25rem;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+      font-size: .9375rem;
+    }
+
+    .footer-inner {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: .5rem 2rem;
+    }
+
+    .footer-inner p { margin: 0; }
+    .site-footer a { color: inherit; }
+    .site-footer a:hover { color: var(--ink); }
+
+    @media (max-width: 24rem) {
+      .brand { gap: .5rem; font-size: 1rem; }
+      .brand-mark { width: 1.75rem; height: 1.75rem; }
+      .check { padding: .875rem 1rem; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .check[data-state="checking"] .check-state .icon,
+      .summary[data-state="checking"] .summary-icon .icon,
+      .stat dd[data-state="loading"]::after { animation: none; }
+      .button { transition: none; }
+    }
+  </style>
+  <noscript>
+    <style>
+      .needs-script { display: none !important; }
+    </style>
+  </noscript>
 </head>
+
 <body>
+  <a class="skip-link" href="#main">Skip to content</a>
 
-<h1>Status</h1>
-<p>This page shows the operational status of the bioacoustic and ecoacoustic services that form the audioBlast ecosystem.</p>
+  <svg class="sprite" aria-hidden="true" focusable="false">
+    <symbol id="icon-checking" viewBox="0 0 24 24"><path d="M12 3a9 9 0 1 0 9 9"/></symbol>
+    <symbol id="icon-up" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="m8.5 12.5 2.5 2.5 5-5.5"/></symbol>
+    <symbol id="icon-down" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="m9.5 9.5 5 5m0-5-5 5"/></symbol>
+    <symbol id="icon-alert" viewBox="0 0 24 24"><path d="M10.3 4.2 2.6 17.5A2 2 0 0 0 4.3 20.5h15.4a2 2 0 0 0 1.7-3L13.7 4.2a2 2 0 0 0-3.4 0Z"/><path d="M12 9.5v4M12 17h.01"/></symbol>
+    <symbol id="icon-refresh" viewBox="0 0 24 24"><path d="M19.5 12a7.5 7.5 0 1 1-2.2-5.3"/><path d="M19.5 4.5v4h-4"/></symbol>
+  </svg>
 
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="https://acousti.cloud/">
+        <svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true" focusable="false"><rect width="32" height="32" rx="9"/><path d="M8.5 13v6M12.25 10v12M16 7.5v17M19.75 11v10M23.5 13.5v5"/></svg>
+        <span>acousti<span class="brand-tld">.cloud</span></span>
+      </a>
+    </div>
+  </header>
 
-<table>
-    <thead>
-      <tr>
-        <th>Service</th>
-        <th>Status</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td>api.audioblast.org (web)</td>
-        <td id="api-web-status"></td>
-      </tr>
-      <tr>
-        <td>api.audioblast.org (database)</td>
-        <td id="api-db-status"></td>
-      </tr>
-      <tr>
-        <td>audioblast.org (web)</td>
-        <td id="audioblast-web-status"></td>
-      </tr>
-      <tr>
-        <td>audioblast.org-dev [ab.acousti.cloud] (web)</td>
-        <td id="audioblast-dev-web-status"></td>
-      </tr>
-      <tr>
-        <td>cdn.audioblast.org (web)</td>
-        <td id="cdn-web-status"></td>
-      </tr>
-      <tr>
-        <td>view.audioblast.org (web)</td>
-        <td id="view-web-status"></td>
-      </tr>
-      <tr>
-        <td>vocab.audioblast.org (web)</td>
-        <td id="vocab-server-web-status"></td>
-      </tr>
-      <tr>
-        <td>vocab.audioblast.org (database)</td>
-        <td id="vocab-server-db-status"></td>
-      </tr>
-  </table>
+  <main id="main" class="container">
+    <div class="page-head">
+      <p class="kicker">audioBlast</p>
+      <h1>Service status</h1>
+      <p class="page-intro">The operational status of the bioacoustic and ecoacoustic services that form the audioBlast ecosystem. The checks run in your browser each time this page is opened.</p>
+    </div>
 
-<div id="data-counts">
-  <table>
-    <thead>
-      <tr>
-        <th>Data type</th>
-        <th>Count</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td>Recordings</td>
-        <td id="data-counts-recordings"></td>
-      </tr>
-      <tr>
-        <td>Annotations</td>
-        <td id="data-counts-annotations"></td>
-      </tr>
-      <tr>
-        <td>Taxa</td>
-        <td id="data-counts-taxa"></td>
-      </tr>
-      <tr>
-        <td>Traits</td>
-        <td id="data-counts-traits"></td>
-      </tr>
-  </table>
-</div>
+    <noscript>
+      <p class="no-script">The checks run in your browser, so this page needs JavaScript to show whether the services are up.</p>
+    </noscript>
 
-<div id="analysis-counts">
-  <table>
-    <thead>
-      <tr>
-        <th>Analysis type</th>
-        <th>Count</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td>ACI</td>
-        <td id="analysis-counts-aci"></td>
-      </tr>
-      <tr>
-        <td>ADI</td>
-        <td id="analysis-counts-adi"></td>
-      </tr>
-      <tr>
-        <td>Bedoya</td>
-        <td id="analysis-counts-bedoya"></td>
-      </tr>
-      <tr>
-        <td>BI</td>
-        <td id="analysis-counts-bi"></td>
-      </tr>
-      <tr>
-        <td>BirdNET embeddings</td>
-        <td id="analysis-counts-birdnet-embeddings"></td>
-      </tr>
-      <tr>
-        <td>BirdNET default IDs</td>
-        <td id="analysis-counts-birdnet-default"></td>
-      </tr>
-      <tr>
-        <td>BirdNET latlon IDs</td>
-        <td id="analysis-counts-birdnet-latlon"></td>
-      <tr>
-        <td>Acoustic evenness</td>
-        <td id="analysis-counts-evenness"></td>
-      </tr>
-      <tr>
-        <td>H</td>
-        <td id="analysis-counts-H"></td>
-      </tr>
-      <tr>
-        <td>M</td>
-        <td id="analysis-counts-M"></td>
-      </tr>
-      <tr>
-        <td>NDSI</td>
-        <td id="analysis-counts-ndsi"></td>
-      </tr>
-      <tr>
-        <td>SH</td>
-        <td id="analysis-counts-sh"></td>
-      </tr>
-      <tr>
-        <td>TDSC</td>
-        <td id="analysis-counts-tdsc"></td>
-      </tr>
-      <tr>
-        <td>TH</td>
-        <td id="analysis-counts-th"></td>
-      </tr>
-  </table>
+    <section class="summary needs-script" id="summary" data-state="checking" aria-labelledby="summary-title">
+      <span class="summary-icon" aria-hidden="true">
+        <svg class="icon" focusable="false"><use href="#icon-checking"/></svg>
+      </span>
+      <div class="summary-text" role="status">
+        <h2 class="summary-title" id="summary-title">Checking services…</h2>
+        <p class="summary-time" id="summary-time">This takes a few seconds.</p>
+      </div>
+      <button type="button" class="button" id="run-checks" aria-disabled="true">
+        <svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-refresh"/></svg>
+        Run checks again
+      </button>
+    </section>
 
-  <table>
-    <thead>
-      <tr>
-        <th>Tasks</th>
-        <th>Count</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td>Analysis agents</td>
-        <td id="analysis-agents"></td>
-      </tr>
-      <tr>
-        <td>Assigned tasks</td>
-        <td id="assigned-tasks"></td>
-      </tr>
-      <tr>
-        <td>Outstanding tasks</td>
-        <td id="outstanding-tasks"></td>
-      </tr>
-  </table>
+    <section class="section" aria-labelledby="services-title">
+      <div class="section-head">
+        <h2 id="services-title">Services</h2>
+        <p class="section-intro">The web servers and databases behind audioBlast.</p>
+      </div>
+      <ul class="checks">
+        <li class="check" id="api-web-status" data-state="checking">
+          <div class="check-name">
+            <span class="check-host">api.audioblast.org</span>
+            <span class="check-kind">Web server</span>
+          </div>
+          <p class="check-state needs-script"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-checking"/></svg><span class="check-label">Checking…</span></p>
+          <p class="check-detail"></p>
+        </li>
+        <li class="check" id="api-db-status" data-state="checking">
+          <div class="check-name">
+            <span class="check-host">api.audioblast.org</span>
+            <span class="check-kind">Database</span>
+          </div>
+          <p class="check-state needs-script"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-checking"/></svg><span class="check-label">Checking…</span></p>
+          <p class="check-detail"></p>
+        </li>
+        <li class="check" id="audioblast-web-status" data-state="checking">
+          <div class="check-name">
+            <span class="check-host">audioblast.org</span>
+            <span class="check-kind">Web server</span>
+          </div>
+          <p class="check-state needs-script"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-checking"/></svg><span class="check-label">Checking…</span></p>
+          <p class="check-detail"></p>
+        </li>
+        <li class="check" id="audioblast-dev-web-status" data-state="checking">
+          <div class="check-name">
+            <span class="check-host">ab.acousti.cloud</span>
+            <span class="check-kind">Development web server for audioblast.org</span>
+          </div>
+          <p class="check-state needs-script"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-checking"/></svg><span class="check-label">Checking…</span></p>
+          <p class="check-detail"></p>
+        </li>
+        <li class="check" id="cdn-web-status" data-state="checking">
+          <div class="check-name">
+            <span class="check-host">cdn.audioblast.org</span>
+            <span class="check-kind">Web server</span>
+          </div>
+          <p class="check-state needs-script"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-checking"/></svg><span class="check-label">Checking…</span></p>
+          <p class="check-detail"></p>
+        </li>
+        <li class="check" id="view-web-status" data-state="checking">
+          <div class="check-name">
+            <span class="check-host">view.audioblast.org</span>
+            <span class="check-kind">Web server</span>
+          </div>
+          <p class="check-state needs-script"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-checking"/></svg><span class="check-label">Checking…</span></p>
+          <p class="check-detail"></p>
+        </li>
+        <li class="check" id="vocab-server-web-status" data-state="checking">
+          <div class="check-name">
+            <span class="check-host">vocab.audioblast.org</span>
+            <span class="check-kind">Web server</span>
+          </div>
+          <p class="check-state needs-script"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-checking"/></svg><span class="check-label">Checking…</span></p>
+          <p class="check-detail"></p>
+        </li>
+        <li class="check" id="vocab-server-db-status" data-state="checking">
+          <div class="check-name">
+            <span class="check-host">vocab.audioblast.org</span>
+            <span class="check-kind">Database</span>
+          </div>
+          <p class="check-state needs-script"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-checking"/></svg><span class="check-label">Checking…</span></p>
+          <p class="check-detail"></p>
+        </li>
+      </ul>
+    </section>
 
-  <small>Author: <a href="https://ebaker.me.uk">Ed Baker</a></small>
+    <section class="section needs-script" aria-labelledby="data-title">
+      <div class="section-head">
+        <h2 id="data-title">Data</h2>
+        <p class="section-intro">The number of recordings, annotations, taxa and traits in audioBlast.</p>
+      </div>
+      <p class="notice" id="data-notice" hidden><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-alert"/></svg><span class="notice-text"></span></p>
+      <dl class="stats">
+        <div class="stat"><dt>Recordings</dt><dd id="data-counts-recordings" data-state="loading">Loading</dd></div>
+        <div class="stat"><dt>Annotations</dt><dd id="data-counts-annotations" data-state="loading">Loading</dd></div>
+        <div class="stat"><dt>Taxa</dt><dd id="data-counts-taxa" data-state="loading">Loading</dd></div>
+        <div class="stat"><dt>Traits</dt><dd id="data-counts-traits" data-state="loading">Loading</dd></div>
+      </dl>
+    </section>
+
+    <section class="section needs-script" aria-labelledby="analysis-title">
+      <div class="section-head">
+        <h2 id="analysis-title">Analyses</h2>
+        <p class="section-intro">The number of analysis results in audioBlast, by type of analysis.</p>
+      </div>
+      <p class="notice" id="analysis-notice" hidden><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-alert"/></svg><span class="notice-text"></span></p>
+      <dl class="stats">
+        <div class="stat"><dt>ACI</dt><dd id="analysis-counts-aci" data-state="loading">Loading</dd></div>
+        <div class="stat"><dt>ADI</dt><dd id="analysis-counts-adi" data-state="loading">Loading</dd></div>
+        <div class="stat"><dt>Bedoya</dt><dd id="analysis-counts-bedoya" data-state="loading">Loading</dd></div>
+        <div class="stat"><dt>BI</dt><dd id="analysis-counts-bi" data-state="loading">Loading</dd></div>
+        <div class="stat"><dt>BirdNET embeddings</dt><dd id="analysis-counts-birdnet-embeddings" data-state="loading">Loading</dd></div>
+        <div class="stat"><dt>BirdNET default IDs</dt><dd id="analysis-counts-birdnet-default" data-state="loading">Loading</dd></div>
+        <div class="stat"><dt>BirdNET latlon IDs</dt><dd id="analysis-counts-birdnet-latlon" data-state="loading">Loading</dd></div>
+        <div class="stat"><dt>Acoustic evenness</dt><dd id="analysis-counts-evenness" data-state="loading">Loading</dd></div>
+        <div class="stat"><dt>H</dt><dd id="analysis-counts-H" data-state="loading">Loading</dd></div>
+        <div class="stat"><dt>M</dt><dd id="analysis-counts-M" data-state="loading">Loading</dd></div>
+        <div class="stat"><dt>NDSI</dt><dd id="analysis-counts-ndsi" data-state="loading">Loading</dd></div>
+        <div class="stat"><dt>SH</dt><dd id="analysis-counts-sh" data-state="loading">Loading</dd></div>
+        <div class="stat"><dt>TDSC</dt><dd id="analysis-counts-tdsc" data-state="loading">Loading</dd></div>
+        <div class="stat"><dt>TH</dt><dd id="analysis-counts-th" data-state="loading">Loading</dd></div>
+      </dl>
+    </section>
+
+    <section class="section needs-script" aria-labelledby="tasks-title">
+      <div class="section-head">
+        <h2 id="tasks-title">Tasks</h2>
+        <p class="section-intro">The agents that run analyses, and the analysis tasks that are assigned or waiting.</p>
+      </div>
+      <p class="notice" id="agents-notice" hidden><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-alert"/></svg><span class="notice-text"></span></p>
+      <p class="notice" id="tasks-notice" hidden><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-alert"/></svg><span class="notice-text"></span></p>
+      <dl class="stats">
+        <div class="stat"><dt>Analysis agents</dt><dd id="analysis-agents" data-state="loading">Loading</dd></div>
+        <div class="stat"><dt>Assigned tasks</dt><dd id="assigned-tasks" data-state="loading">Loading</dd></div>
+        <div class="stat"><dt>Outstanding tasks</dt><dd id="outstanding-tasks" data-state="loading">Loading</dd></div>
+      </dl>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <p>Maintained by <a href="https://ebaker.me.uk">Ed Baker</a>.</p>
+      <p><a href="https://github.com/acoustiCloud/status.acousti.cloud">Source on GitHub</a></p>
+    </div>
+  </footer>
+
   <script src="status.js"></script>
 </body>
 </html>
