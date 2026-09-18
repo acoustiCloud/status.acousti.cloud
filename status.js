@@ -122,13 +122,17 @@
     }, requestFailed);
   }
 
-  //A database is up unless its check replies that the connection failed
+  //A database is up when its check replies "pong", which the servers only do once the database has answered a query.
+  //They reply HTTP 503 when it doesn't; any other reply, such as a page that isn't found, doesn't show the database is up.
   function dbping(url) {
     return request(url).then(function (reply) {
-      if (reply.text.startsWith("Database connection failed:")) {
-        return {up: false, detail: "Database connection failed"};
+      if (reply.ok && reply.text === "pong") {
+        return {up: true};
       }
-      return {up: true};
+      if (reply.status == 503) {
+        return {up: false, detail: "Database not answering"};
+      }
+      return {up: false, detail: "Unexpected reply (HTTP " + reply.status + ")"};
     }, requestFailed);
   }
 
