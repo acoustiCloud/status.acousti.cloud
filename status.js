@@ -29,7 +29,8 @@
         "data-counts-annotations": ["data", "counts", "annomate"],
         "data-counts-taxa": ["data", "counts", "taxa"],
         "data-counts-traits": ["data", "counts", "traits"],
-        "data-counts-references": ["data", "counts", "references"]
+        "data-counts-references": ["data", "counts", "references"],
+        "data-counts-links": ["data", "counts", "links"]
       }
     },
     {
