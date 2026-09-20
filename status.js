@@ -32,7 +32,6 @@
         "data-counts-references": ["data", "counts", "references"],
         "data-counts-links": ["data", "counts", "links"],
         "data-counts-descriptions": ["data", "counts", "descriptions"],
-        "data-counts-details": ["data", "counts", "details"],
         "data-counts-locations": ["data", "counts", "locations"],
         "data-counts-specimens": ["data", "counts", "specimens"],
         "data-counts-vernacular-names": ["data", "counts", "vernacularnames"],
