@@ -31,11 +31,15 @@
         "data-counts-traits": ["data", "counts", "traits"],
         "data-counts-references": ["data", "counts", "references"],
         "data-counts-links": ["data", "counts", "links"],
+        //The API gives this one beside the counts rather than among them
+        "data-counts-cross-source-links": ["data", "cross_source_links"],
         "data-counts-descriptions": ["data", "counts", "descriptions"],
         "data-counts-locations": ["data", "counts", "locations"],
         "data-counts-specimens": ["data", "counts", "specimens"],
         "data-counts-vernacular-names": ["data", "counts", "vernacularnames"],
-        "data-counts-deployments": ["data", "counts", "deployments"]
+        "data-counts-deployments": ["data", "counts", "deployments"],
+        "data-counts-ecological-interactions": ["data", "counts", "ecoint"],
+        "data-counts-onomatopoeia": ["data", "counts", "onomatopoeia"]
       }
     },
     {
