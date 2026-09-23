@@ -3,7 +3,7 @@
 (function () {
   "use strict";
 
-  //How long to wait for each reply before treating the request as failed
+  //How long to wait for each reply before treating the request as failed, unless a request asks for longer
   var TIMEOUT_SECONDS = 10;
 
   //Each service's card on the page, the address that is checked, and how to check it
@@ -75,6 +75,9 @@
       url: "https://api.audioblast.org/standalone/analysis/fetch_analysis_status/?cache=0",
       name: "the task counts",
       notice: "tasks-notice",
+      //These counts are asked for afresh rather than from the API's cache, and counting a queue of
+      //millions of tasks takes the API far longer than the other counts take
+      timeout: 30,
       tiles: {
         "assigned-tasks": ["data", "counts", "assigned"],
         "outstanding-tasks": ["data", "counts", "waiting"]
@@ -98,13 +101,14 @@
   var lastChecked = null;
 
   //Fetches a URL as text, giving up if the whole reply hasn't arrived in time
-  function request(url) {
+  function request(url, seconds) {
+    var timeout = seconds || TIMEOUT_SECONDS;
     var controller = new AbortController();
     var timedOut = false;
     var timer = setTimeout(function () {
       timedOut = true;
       controller.abort();
-    }, TIMEOUT_SECONDS * 1000);
+    }, timeout * 1000);
 
     //Not from the browser's cache, so checking again asks the service again
     return fetch(url, {cache: "no-store", signal: controller.signal})
@@ -115,7 +119,7 @@
       })
       .catch(function () {
         //The browser doesn't say why a request failed (the network, DNS or CORS, say), only that it did
-        throw new Error(timedOut ? "No reply within " + TIMEOUT_SECONDS + " seconds" : "Connection failed");
+        throw new Error(timedOut ? "No reply within " + timeout + " seconds" : "Connection failed");
       })
       .finally(function () {
         clearTimeout(timer);
@@ -152,8 +156,8 @@
   }
 
   //Fetches a reply from the audioBlast API as JSON
-  function fetchJson(url) {
-    return request(url).then(function (reply) {
+  function fetchJson(url, seconds) {
+    return request(url, seconds).then(function (reply) {
       if (!reply.ok) {
         throw new Error("The API replied with HTTP " + reply.status);
       }
@@ -208,7 +212,7 @@
     });
     showNotice(notice, "");
 
-    return fetchJson(countRequest.url).then(function (reply) {
+    return fetchJson(countRequest.url, countRequest.timeout).then(function (reply) {
       var missing = 0;
       ids.forEach(function (id, index) {
         var count = toCount(lookup(reply, countRequest.tiles[id]));
