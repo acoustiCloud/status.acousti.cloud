@@ -39,7 +39,8 @@
         "data-counts-vernacular-names": ["data", "counts", "vernacularnames"],
         "data-counts-deployments": ["data", "counts", "deployments"],
         "data-counts-ecological-interactions": ["data", "counts", "ecoint"],
-        "data-counts-onomatopoeia": ["data", "counts", "onomatopoeia"]
+        "data-counts-onomatopoeia": ["data", "counts", "onomatopoeia"],
+        "data-counts-images": ["data", "counts", "images"]
       }
     },
     {
